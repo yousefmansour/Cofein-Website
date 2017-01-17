@@ -1,0 +1,39 @@
+{% extends layout %}
+{% block content %}
+<div id="title-wrapper">Shop</div>
+<div id="messages">
+    {% for message in messages %}
+            <div class="message">{{ message }}</div>
+    {% endfor %}
+</div>
+<div id="admin-shop">
+        <form action="?adminpage=shop" method="POST" enctype="multipart/form-data">
+            <div class='input-label'>Image:</div>
+            <input class='input-field' id="file-upload" type="file" name="shop-image">
+            <input class='input-field' type="text" name="shop-name" placeholder="Article name" maxlength="100">
+            <input class='input-field' type="number" name="shop-price" placeholder="Price" maxlength="9">     
+            <textarea class='input-field' name="shop-desc" placeholder="Description" rows="5" cols="50" maxlength="250"></textarea>   
+            <input class="input-submit" type="submit" name="shop_submit">
+        </form>      
+</div>
+
+<style>
+    .input-label {
+        font-family: Helvetica;
+        font-size: 90%;
+        font-weight: bold;
+    }
+    
+    .input-field {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    
+    .input-submit {
+        width: 200px;
+        height: 25px;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}

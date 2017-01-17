@@ -1,0 +1,208 @@
+{% extends layout %}
+{% block content %}
+<div id="title-wrapper">Gallery</div>
+<div id="messages">
+    {% for message in messages %}
+    <div class="message">{{ message }}</div>
+    {% endfor %}
+</div>
+<div id="create-album-button">
+    <a id="create-album" href="" >Create new album</a>
+</div>
+
+<div id="create-album-form">
+    <form action="?adminpage=gallery" method="POST">
+        <div class="input-label">Album name</div>
+        <input class="input-field" id="album-title" type="text" name="album_title">
+        <input id="form-submit" type="submit" name="create_album" value="Create">
+    </form>
+</div>
+<div id="gallery-content-container">
+    {% for album in content.albums %}
+    <div class="album">
+        <div class="album-title">{{album.title}}</div>
+        <div class="image-wrapper">
+            <a href="?adminpage=gallery_edit&album_id={{album.id}}" title="Click to edit">     
+                {% if album.images[0] is defined %}
+                    <img class="album-cover" src="{{album.images[0].path}}" alt="">  
+                {% else %}
+                    <div class="album-image-empty">Click<br/>to add<br/>images</div>
+                {% endif %}
+            </a>
+        </div>
+        <a class="album-delete" href="?adminpage=gallery&delete_album={{album.id}}">Delete</a>
+    </div>
+    {% endfor %}
+</div> 
+<style> 
+    #create-album-button {
+        width: 175px;
+        margin-top: 30px;
+        margin-left: 285px;
+        padding: 5px;
+        border: 3px dotted gray;
+    }
+
+    #create-album-button a {
+        color: black;
+        text-decoration: none;
+        font-size: 20px;
+        font-family: Helvetica, sans-serif;
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #create-album-form {
+        width: 600px;
+        height: 100px;
+        margin-top: 25px;
+        margin-left: auto;
+        margin-right: auto;
+        display: none;
+        text-align: center;
+    }
+    
+    .input-label {
+        font-size: 16px;
+        font-weight: bold;
+        font-family: Trebuchet MS,Arial,sans-serif;
+        margin-top: 5px;
+        margin-bottom: 3px;
+        text-align: center;
+    }
+    
+    .input-field {
+        font-size: 100%;
+        font-family: Arial, sans-serif;
+    }
+    
+    #album-title {
+        width: 400px;
+        height: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    #form-submit {
+        width: 100px;
+        height: 25px;    
+        margin-top: 10px;
+        display: inline-block;
+    } 
+    
+    #form-submit:hover {
+        cursor: pointer;
+    }
+    
+    .input-error {
+        border: 1px solid red;		
+        outline: none;
+    }
+    
+    #gallery-content-container {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .album {
+        width: 236px;
+        margin-top: 25px;
+        border-top: 3px solid gray;
+        padding-top: 4px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .album-title {
+        height: 40px;
+        font-family: Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .image-wrapper {
+        width: 100%;
+        height: 200px;
+        margin: auto;
+        overflow: hidden;
+        border-radius: 5px;
+    }
+
+    .album-cover {
+        min-width: 100%;
+        min-height: 100%;
+        max-width: 150%;
+        max-height: 150%;
+    }
+
+    .album-image-empty {
+        background-color: lightgray;
+        width: 100%;
+        height: 100%;
+        color: white;
+        font-size: 60px;
+        font-weight: bold;
+        font-family: Impact;
+        text-align: center;
+        padding-top: 10px;
+    }
+    
+    .album-delete {
+        width: 45px;
+        color: #0066ff;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: Rockwell, sans-serif;
+        text-decoration: none;
+        display: block;
+        margin-top: 2px;
+        margin-left: 2px;
+    }
+
+    .album-delete:hover {
+        text-decoration: underline;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<script>
+    var deleteButtons = document.getElementsByClassName('album-delete');
+
+    for (var i = 0; i < deleteButtons.length; i++) {
+        deleteButtons[i].addEventListener('click', function(e) {
+            if (!confirm('Are you sure you want to delete this album?')) {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    document.getElementById('form-submit').addEventListener('click', function(e){
+        var input = document.getElementById('album-title');
+        var title = input.value;
+        if(title.length < 1){
+            e.preventDefault();
+            input.className += " input-error";
+        }
+        
+        input.addEventListener('change', function(){
+           input.className = "";
+           input.className += "input-field";
+        });
+    });
+    
+    document.getElementById('create-album').addEventListener('click', function(e){
+        e.preventDefault();
+        document.getElementById('create-album-form').style.display = "block";
+        document.getElementById('create-album-button').style.display = "none";
+        document.getElementById('album-title').focus();
+    });
+</script>
+{% endblock %}

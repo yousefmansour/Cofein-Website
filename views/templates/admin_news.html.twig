@@ -1,0 +1,104 @@
+{% extends layout %}
+{% block content %}
+<link href="inc/css/reset.css" rel="stylesheet" type="text/css">
+<script src="inc/jquery/jquery.js"></script> 
+<link href="inc/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="inc/bootstrap/dist/js/bootstrap.min.js"></script> 
+<link href="inc/summernote/summernote.css" rel="stylesheet">
+<script src="inc/summernote/summernote.js"></script>
+
+<style>
+    body {
+        background-color: lightgray;
+    }
+     
+    #news-container {
+        width: 600px;
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .input-label {
+        font-size: 95%;
+        font-weight: bold;
+        font-family: Trebuchet MS,Arial,sans-serif;
+        margin-top: 5px;
+    }
+    
+    #input-title {
+        width: 600px;
+        height: 30px;
+        font-size: 110%;
+        font-family: Arial, sans-serif;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .input-error {
+        border: 1px solid red;		
+        outline: none;
+    }
+
+    #input-submit {
+        width: 200px;
+        height: 25px;
+        margin-left: 200px;
+        margin-top: 5px;
+    }
+</style>
+<div id="title-wrapper">News</div>
+<div id="messages">
+    {% for message in messages %}
+            <div class="message">{{ message }}</div>
+    {% endfor %}
+</div>
+
+<div id="news-container">
+    <div class="input-label">Title</div>
+    <input class="input-field" id="input-title" type="text" id="title">
+    <div class="input-label">Content</div>
+    <div class="input-field" id="summernote"></div>	
+    <input type="submit" id="input-submit" value="Submit">
+</div>
+
+<form id="form" action="?adminpage=news" method="POST" hidden>
+    <input type="text" id="news-title" name="news_title">
+    <textarea id="news-content" name="news_content"></textarea>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            toolbar: [
+                ['style', ['bold', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['insert', ['picture', 'link', 'video']],
+                ['misc', ['undo', 'redo', 'fullscreen']]
+            ],
+            height: 200
+        });
+
+        $("#input-submit").click(function() {
+            var title = $("#input-title").val();
+            var content = $('#summernote').summernote('code');
+
+            if (title.length < 1) {
+                $("#input-title").addClass('input-error');
+                $("#input-title").focus();
+            } else if($("#news-title").val().length > 250) {
+                $("#messages").append("<div>Title is too long.</div>");
+            } else {
+                $("#news-title").val(title);
+                $("#news-content").val(content);
+                $("#form").submit();
+            }
+
+            $("#input-title").change(function() {
+                $(this).removeClass('input-error');
+            });
+        });
+    });
+</script>
+
+{% endblock %}

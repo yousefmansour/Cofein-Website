@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link href="reset.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        
+        <div id="main-container">
+            <a href="/"><span class="small-font"><<</span> Home</a>	
+            <div id="form-container">
+                <div id="messages">
+                    {% for message in messages %}
+                        <div>{{ message }}</div>
+                    {% endfor %}
+                </div>
+                
+                <form id="form" action="?admin=true" method="POST">
+                    <div class="form-label">Name</div>
+                    <input type="text" class="form-field" name="username">
+                    <div class="form-label">Password</div>
+                    <input type="password" class="form-field" name="password">
+                    <br />
+                    <input type="submit" id="form-submit" name="submit_login">
+                </form>
+            </div>
+        </div>
+        <style>
+            body {
+                background-color: lightgray;
+            }
+            
+            #messages {
+                width: 60%;
+                height: 15px;
+                font-family: Courier New;
+                font-weight: bold;
+                font-size: 120%;
+                margin-top: 20px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+            
+            #main-container {
+                width: 40%;
+                margin-top: 100px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            #form-container {
+                width: 100%;
+                height: 250px;
+                background-color: whitesmoke;
+                margin-left: auto;
+                margin-right: auto;
+                border: 1px solid black;
+                text-align: center;
+            }
+
+            #form {
+                margin-top: 20px;
+            }
+
+            a {
+                text-decoration: none;
+                background-color: black;
+                padding: 3px;
+                border-radius: 1px;
+                color: white;
+                display: inline-block;
+                font-family: Verdana, Geneva, sans-serif;
+            }
+
+            .small-font {
+                font-size: 70%;
+            }
+
+            .form-label {
+                font-weight: bold;
+                font-family: Trebuchet MS,Arial,sans-serif;
+            }
+
+            .form-field {
+                width: 300px;
+                height: 20px;
+                padding: 1px;
+                margin-top: 5px;
+                margin-bottom: 8px;
+                border: 1px solid black;
+                border-radius: 5px;
+                clear: left;
+                display: inline-block;
+                outline: none;
+            }
+
+            #form-submit {
+                width: 300px;
+                height: 30px;
+                margin-top: 10px;
+                border: 1px solid black;
+                border-radius: 5px;
+                font-size: 120%;
+                font-family: Trebuchet MS,Arial,sans-serif;
+                background-color: black;
+                color: white;
+                display: inline-block;
+                outline: none;
+                cursor: pointer;
+            }
+        </style>       
+
+        <script>
+            window.onload = function() {
+                document.getElementsByClassName("form-field")[0].focus();
+            }
+        </script>		
+    </body>
+</html>

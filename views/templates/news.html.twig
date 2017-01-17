@@ -1,0 +1,111 @@
+{% extends layout %}
+{% block articles %}
+<style>
+    .news-article {     
+        margin-top: 30px;        
+    }
+
+    .news-article:first-child {
+        margin-top: 0px;
+    }
+    
+    .news-date {
+        font-family: Rockwell, sans-serif;
+        font-weight: normal;
+        color: lightgray;
+    }
+
+    .news-title {
+        font-family: Rockwell, sans-serif;
+        font-size: 30px;
+        color: whitesmoke;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-weight: 500;
+        line-height: 1.0;
+    }
+
+    .news-content img {
+        margin-top: 10px; 
+        margin-bottom: 10px;
+        max-width: 640px;
+        max-height: 640px;
+    }
+
+    .news-content iframe {
+        display: block;
+        border: none;
+        width: 640px;
+        height: 360px;
+        margin-bottom: 10px;
+    }
+    
+    .confirm {
+        margin-top: 10px;
+        color: #337ab7;
+        text-decoration: none;
+    }
+</style>
+
+<div id="news-content">
+    {% for article in content %}
+    {% autoescape false %}
+    <div class="news-article">
+        <div class="news-date">{{ article.date }}</div>
+        <div class="news-title">{{ article.title }}</div>
+        <div class="news-content">
+                {{ article.content }}
+        </div>
+            {% if session.admin %}
+        <div>
+            <a class="confirm" href="news?admin=true&news_delete={{ article.id }}#Main">Delete</a>
+        </div>
+            {% endif %}
+    </div>
+    {% endautoescape %}   
+    {% endfor %}       
+</div> 
+<div id="end">
+</div>
+
+<script>
+    var offset = $(".news-article").length;
+    var limit = 1;
+    var end = false;
+    var pause = false;
+
+    $(window).scroll(function (){
+        if ($(window).scrollTop() + window.innerHeight > $(document).height() - 200 && pause === false) {
+            getNextArticle();
+        }
+    });
+
+    function getNextArticle() {
+        pause = true;
+        $.ajax({
+            url: '?page=news&offset=' + offset + '&limit=' + limit,
+            dataType: 'json'
+        }).done(function(json) {
+
+            if (json.length > 0) {
+
+                var date = '<div class="news-date">' + json[0].date + '</div>';
+                var title = '<div class="news-title">' + json[0].title + '</div>';
+                var content = '<div class="news-content">' + json[0].content + '</div>';
+
+                var article = '<div class="news-article">' + date + title + content + '</div>';
+
+            {% if session.admin %}
+                var deleteArticle = '<div><a class="confirm" href="news?go=news&delete=news_' + json[0].id + '#Main">Delete</a></div>';
+                article += deleteArticle;
+            {% endif %}
+                $("#news-content").append(article);
+                offset++;
+            } else {
+                end = true;
+            }
+            pause = false;
+        });
+    }
+</script>
+{% endblock %}

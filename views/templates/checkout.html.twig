@@ -1,0 +1,110 @@
+{% extends layout %}
+{% block articles %}
+<a class="link" href="?go=shop&lang={{ lang }}#Main">Back</a><br />
+<div class="checkout-messages">
+{% for message in messages %}
+            <b>{{ message }}</b><br />
+{% endfor %}
+</div>
+
+    <div class="checkout-form">
+            <div>
+                Name:<span class="checkout-req">*</span> <br />
+                <input id="checkout-name" class="form-field" type="text" name="name">
+            </div>
+            <div>
+                Phone:<span class="checkout-req">*</span> <br />
+                <input id="checkout-phone" class="form-field" type="text" name="phone">
+            </div>
+            <div>
+                E-mail:<span class="checkout-req">*</span> <br />
+                <input id="checkout-email" class="form-field" type="text" name="email">
+            </div>
+            <div>
+                Address:<span class="checkout-req">*</span> <br />    
+                <textarea id="checkout-address" class="form-field" name="address" rows="6" cols="50"></textarea>
+            </div>
+            <div>
+                More info: <br />
+                <textarea id="checkout-info" class="form-field" name="info" rows="6" cols="50"></textarea>
+            </div>
+            <div>
+                <input id="checkout-submit" type="submit" value="Submit" name="checkout_submit">
+            </div>
+    </div>
+ <span id="lang" style="visibility: hidden;">{{ lang }}</span>
+    <style>
+        .form-field {
+            background-color: beige;
+        }
+        .checkout-req {
+            color: red;     
+        }
+
+        .checkout-messages {
+            height: 2em;
+        }
+        .form-field-error {
+            background-color: #FFB2B2;
+        }
+        .link {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;          
+        }
+    </style>
+    <script>        
+        $(document).ready(function(){
+           
+            $('#checkout-submit').click(function(e){
+                e.preventDefault();
+                var name = $('#checkout-name').val();
+                var phone = $('#checkout-phone').val();
+                var email = $('#checkout-email').val();
+                var address = $('#checkout-address').val();
+                var info = $('#checkout-info').val();
+                $('#checkout-name-message').html('*');
+                $('#checkout-phone-message').html('*');
+                $('#checkout-email-message').html('*');
+                $('#checkout-address-message').html('*');
+                if(name.length < 1){
+                    $('#checkout-name').addClass('form-field-error'); 
+                    return false;
+                } else {
+                    $('#checkout-name').removeClass('form-field-error');
+                }
+                if(phone.length < 1){
+                    $('#checkout-phone').addClass('form-field-error');
+                    return false;
+                } else {
+                    $('#checkout-phone').removeClass('form-field-error');
+                }
+                if(email.length < 1){
+                    $('#checkout-email').addClass('form-field-error');
+                    return false;
+                } else {
+                    $('#checkout-email').removeClass('form-field-error');
+                }
+                if(address.length < 1){
+                    $('#checkout-address').addClass('form-field-error');
+                    return false;
+                } else {
+                    $('#checkout-address').removeClass('form-field-error');
+                }
+                
+                var lang = $('#lang').html();
+                $.post('?p=shopcheckout&lang='+lang,
+                {
+                    name: name, 
+                    phone: phone, 
+                    email: email, 
+                    address: address, 
+                    info: info,
+                    submit: true
+                }).done(function(html){
+                     $('.main-content').html(html);
+                });                
+            });
+        });
+    </script>
+{% endblock %}

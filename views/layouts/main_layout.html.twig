@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Група Cofein - Официален уебсайт</title>
+        <link href="{{ path }}views/css/reset.css" rel="stylesheet" type="text/css">
+        
+        <link href='https://fonts.googleapis.com/css?family=Stalinist+One&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <meta name="description" content="Група Cofein - Официален уебсайт - Новини, Биография, Снимки">
+        <meta name="viewport" content="initial-scale=0.25">
+        <script src="{{ path }}views/js/jquery-compressed.js"></script>
+        <script src="{{ path }}views/js/script.js"></script>
+        <!-- used for youtube popups -->
+        <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/ui-darkness/jquery-ui.css" rel="stylesheet" />
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="views/js/youtube.js"></script>
+    </head>
+    <body>
+        <link href="{{ path }}views/css/style.css" rel="stylesheet" type="text/css">
+        <a id="sponsor-link-left" href="https://www.radiopatron.com/" target="_blank"></a>
+        <a id="sponsor-link-right" href="https://www.radiopatron.com/" target="_blank"></a>
+        <div id="social-media-links">	
+            <a href="https://www.facebook.com/cofeinband" target="_blank" title="Facebook"><img src="views/img/social-media-icons/facebook.png"></a>
+            <a href="https://twitter.com/cofeinband" target="_blank" title="Twitter"><img src="views/img/social-media-icons/twitter.png"></a>
+            <a href="https://www.youtube.com/user/COFEINofficial" target="_blank" title="Youtube"><img src="views/img/social-media-icons/youtube.png"></a>	
+        </div>
+        <div id="nav">
+            <a href="news" class="ajax"> 
+                <div class="nav-menu">НОВИНИ</div>
+            </a>
+            <a href="bio" class="ajax"> 
+                <div class="nav-menu">БИО</div>
+            </a>
+            <a href="gallery" class="ajax"> 
+                <div class="nav-menu">СНИМКИ</div>
+            </a>
+            <a href="shop"> 
+                <div class="nav-menu">МАГАЗИН</div>
+            </a>
+            <a href="partners" class="ajax">
+                <div class="nav-menu">ПАРТНЬОРИ</div>
+            </a>
+        </div>
+
+        <div id="ie-nav">
+            <table>
+                <tr>  
+                    <td class="ie-nav-menu"><a href="news" class="ajax" style="color: white; text-decoration: none;">НОВИНИ</a></td>
+                    <td class="ie-nav-menu"><a href="bio" class="ajax" style="color: white; text-decoration: none;">БИО</a></td>
+                    <td class="ie-nav-menu"><a href="gallery" class="ajax" style="color: white; text-decoration: none;">СНИМКИ</a></td>
+                    <td class="ie-nav-menu"><a href="shop" style="color: white; text-decoration: none;">МАГАЗИН</a></td>
+                    <td class="ie-nav-menu"><a href="partners" class="ajax" style="color: white; text-decoration: none;">ПАРТНЬОРИ</a></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="content">
+            <article id="main-content">
+                <div id="Main"></div>
+                <!-- Errors and messages go here -->
+                    {% for message in messages %}
+                <b>{{ message }}</b><br />
+                    {% endfor %}
+                <!-- Main content goes here -->    
+                    {% block articles %}
+                    {% endblock %}
+            </article>
+
+            <aside id="sidebar">
+                <div class="widget_iframe" style="display:inline-block;height:25em;margin:0;padding:0;border:0;"><iframe class="widget_iframe" src="https://www.reverbnation.com/widget_code/html_widget/artist_1478284?widget_id=50&amp;posted_by=artist_4464708&pwc[design]=default&pwc[background_color]=%23333333&pwc[included_songs]=1&pwc[photo]=0%2C1&pwc[size]=fit" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+                    <div class="footer_branding" style="margin-top:-5px;font-size:10px;font-family:Arial;"><center><a href="http://www.reverbnation.com/band-promotion/how-to-sell-music-on-itunes?utm_campaign=a_features_distribution&utm_medium=widget&utm_source=HTML5_Player&utm_content=widgetfooter_Sell music on itunes at ReverbNation.com" target="_blank" style="text-decoration:none;color:#444;">Sell music on itunes at ReverbNation.com</a></center>
+                    </div>
+                </div>
+                <div class="widget_iframe" style="display:inline-block;height:30em;margin:0;padding:0;border:0;"><iframe class="widget_iframe" src="https://www.reverbnation.com/widget_code/html_widget/artist_1478284?widget_id=51&amp;posted_by=artist_4464708&pwc[design]=default&pwc[background_color]=%23333333&pwc[size]=custom" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+                    <div class="footer_branding" style="margin-top:-5px;font-size:10px;font-family:Arial;"><center><a href="http://www.reverbnation.com/band-promotion/widgets?utm_campaign=a_features_widgets&utm_medium=widget&utm_source=HTML5_Video_Player&utm_content=widgetfooter_Free music player widget at ReverbNation.com" target="_blank" style="text-decoration:none;color:#444;">Free music player widget at ReverbNation.com</a></center>
+                    </div>
+                </div>
+            </aside>
+            <div id="clear"></div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                showHideSponsorLinks();
+
+                $(window).resize(function() {
+                    showHideSponsorLinks();
+                });
+
+                $(window).scroll(function() {
+                    showHideSponsorLinks();
+                });
+                
+                function showHideSponsorLinks(){
+                    var winWidth = window.innerWidth;
+                    var winHeight = window.innerHeight;
+
+                    if(sponsorLinksVisible(winWidth, winHeight)){
+                        $("#sponsor-link-left").show();
+                        
+                        if(rightLinkVisible(winWidth, winHeight)) {
+
+                            $("#sponsor-link-right").show();
+
+                            $("#sponsor-link-right").width(winWidth / 5);
+                            $("#sponsor-link-right").height(winWidth / 5);
+                            $("#sponsor-link-left").width(winWidth / 5);
+                            $("#sponsor-link-left").height(winWidth / 5);
+                        } else {
+                            $("#sponsor-link-left").width(winHeight / 3);
+                            $("#sponsor-link-left").height(winHeight / 3);
+                            $("#sponsor-link-right").hide();
+                        }
+                    } else {
+                        $("#sponsor-link-left").hide();
+                        $("#sponsor-link-right").hide();
+                    }
+                }
+                
+                function sponsorLinksVisible(width, height) {
+                    if ($(window).scrollTop() <= ((width/height)*height)/4) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                
+                function rightLinkVisible(width, height) {
+                    if((height * 1.45) < width) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                
+                var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+                if (isIE) {
+                    $("#nav").hide();
+                    $("#ie-nav").show();
+                    $("body").css("min-width", '1080px');
+                }
+            });
+        </script>
+    </body>
+</html>

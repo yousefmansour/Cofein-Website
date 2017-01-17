@@ -1,0 +1,127 @@
+{% extends layout %}
+
+{% block articles %}
+
+{% if content.itemsInCart > 0 %}
+    <a id="cart" href="shop?cart=true">
+        <img src="{{ path }}views/img/shop/icons/cart.png" />
+        <span id="cart-content">{{ content.itemsInCart }}</span>
+    </a>
+{% else %}
+    <div id="cart">
+        <img src="{{ path }}views/img/shop/icons/cart.png" />
+        <span id="cart-content">{{ content.itemsInCart }}</span>
+    </div>
+{% endif %}
+ 
+
+<div id="shop-content">
+    {% for article in content.items %}
+        <div class="shop-article">
+            <a href="shop?shop_details={{article.id}}"><img class="shop-article-image" src="{{ article.image }}"></a>
+            <a href="shop?shop_details={{article.id}}"><div class="shop-article-title">{{ article.name }}</div></a>
+           <!-- <div class="shop-article-desc">{{ article.description }}</div> -->
+            <div class="shop-article-price">{{ article.price|number_format(2) }} лв.</div>
+           <!-- <a class="shop-article-buy" href="/shop?addtocart={{ article.id }}">Купи</a> -->
+            {% if session.admin %}
+                <h5><a href="?admin=true&shop_delete={{ article.id }}#Main">Delete</a></h5>
+            {% endif %}
+        </div>
+        
+    {% endfor %}
+</div>
+{% if content.itemsInCart > 0 %}
+    <span id="checkout" >
+        <a class="link" href="shop?checkout=true">Checkout</a>
+    </span>
+{% endif %}
+
+<style>  
+    #cart {
+        display: block;
+        position: relative;
+        left: 600px;
+        width: 80px;
+        height: 30px;
+        text-decoration: none;
+        margin-bottom: 10px;
+    }
+    
+    #cart img {
+        width: 30px;
+        height: 30px;
+    }
+    
+    #cart-content {
+        width: 20px;
+        height: 20px;
+        padding: 2px 6px 2px 6px;
+        background-color: #ff9900;
+        border-radius: 50%;
+        color: black;
+        font-weight: bold;
+        font-size: 110%;
+        position: relative;
+        top: -5px;
+    }
+    
+    .shop-article {
+        height: 400px;
+        width: 300px;
+        background-color: black;
+        border: 1px solid red;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 5px;
+        color: black;
+        float: left;
+        margin-top: 14px;
+        margin-right: 8px;
+    }
+    
+    .shop-article-image {
+        height: 300px;
+        width: 300px;
+        margin-right: 5px;
+    }
+    
+    .shop-article-title {
+        font-weight: bold;
+        font-size: 24px;
+        width: 300px;
+        height: 35px;
+        margin-top: 10px;
+        color: #e7ac31;
+        text-align: center;
+    }
+    
+    .shop-article-title:hover {
+        text-decoration: underline;
+    }
+    
+    .shop-article-price {
+        width: 300px;
+        height: 35px;
+        margin-top: 10px;
+        font-size: 26px;
+        color: white;
+        font-family: Arial,Helvetica,san-serif;
+        text-align: center;
+    }
+    
+    #checkout {
+        float: right;
+        margin-right: 0.8em;
+        margin-top: 1px;
+        font-size: 110%;
+        background-color: grey;
+        border-radius: 3px;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+</style>
+                
+{% endblock %}
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cofein</title>
+        <link rel="stylesheet" type="text/css" href="views/css/style.css">
+        <!-- TO DO replace with compressed jquery -->
+        <script src="views/js/jquery.js"></script>
+        <script src="views/js/script.js"></script>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        {% block header %}
+            <header class="main-header">
+                <span class="lang-box">
+                    <a class="lang-button" href="?lang=en&go=shop"><img  id="lang-en" src="views/img/flag_en.jpg"></a>
+                    <a class="lang-button" href="?lang=bg&go=shop"><img id="lang-bg" src="views/img/flag_bg.jpg"></a>
+                </span>
+
+            </header>
+            <nav class="nav">
+             <ul>
+                 {% if lang == 'en' %}
+                     <li><a class='nav-button' id='index-en' href="?go=index&lang=en#Main">NEWS</a></li>
+                     <li><a class='nav-button' id='' href="#Main">THE BAND</a></li>
+                     <li><a class='nav-button' id='' href="#Main">TOUR DATES</a></li>
+                     <li><a class='nav-button' id='' href="#Main">MEDIA</a></li>
+                     <li><a class='nav-button' id='gallery-en' href="?go=gallery&lang=en#Main">GALLERY</a></li>
+                     <li><a class='nav-button' id='shop-en' href="?go=shop#Main">SHOP</a></li>
+                 {% else %}
+                     <li><a class='nav-button' id='index-bg' href="#Main">НОВИНИ</a></li>
+                     <li><a class='nav-button' id='' href="#Main">ЗА ГРУПАТА</a></li>
+                     <li><a class='nav-button' id='' href="#Main">TOUR DATES</a></li>
+                     <li><a class='nav-button' id='' href="#Main">MEDIA</a></li>
+                     <li><a class='nav-button' id='gallery-bg' href="#Main">GALLERY</a></li>
+                     <li><a class='nav-button' id='shop-bg' href="#Main">SHOP</a></li>
+                 {% endif %}
+             </ul>
+
+             <a class="external-links" href="https://www.facebook.com/cofeinband" title="Facebook"><img src="views/img/facebook.jpg"></a>
+             <a class="external-links" href="https://twitter.com/cofeinband" title="Twitter"><img src="views/img/twitter.jpg"></a>
+             <a class="external-links" href="https://www.youtube.com/user/COFEINofficial" title="Youtube"><img src="views/img/youtube.jpg"></a>
+            </nav>   
+        {% endblock %}
+        {% block content %}
+        <article class="main-content-shop">
+
+            <span id="Main"></span>
+            <!-- Errors and messages go here -->
+            {% for message in messages %}
+                <b>{{ message }}</b><br />
+            {% endfor %}
+            <!-- Main content goes here -->    
+            {% block articles %}
+            {% endblock %}
+
+        </article>
+        {% endblock %}
+
+    </body>
+</html>
+

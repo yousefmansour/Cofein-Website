@@ -1,0 +1,164 @@
+{% extends layout %}
+
+{% block articles %}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
+<!--[if lt IE 9]>
+  <script type="text/javascript" src="/js/excanvas.js"></script>
+<![endif]-->
+<script type="text/javascript" src="views/js/spinners.min.js"></script>
+<script type="text/javascript" src="views/js/lightview.js"></script>
+<link rel="stylesheet" type="text/css" href="views/css/lightview.css"/>
+<link href='https://fonts.googleapis.com/css?family=Play' rel='stylesheet' type='text/css'>   
+<style>
+    .gallery-album {
+    	margin-top: 20px;
+        border-bottom: 1px whitesmoke groove;
+    }
+    
+    .gallery-album-title {
+        font-family: Play, Times New Roman;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        clear: both;
+        height: 1.5em;
+        display: block;
+    }
+    
+    .gallery-cover {
+        width: 28em;
+        height: 21em;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        clear: both;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center center;
+    }
+    
+    .gallery-image-container {
+        width: 30em;
+	height: 10em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .gallery-image {
+        display: block;
+        float: left;
+        width: 8em;
+        height: 6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center center;
+    }
+
+    .gallery-hidden-image {
+        visibility: hidden;
+        display: none;
+    }        
+    
+    #gallery-page {
+        text-align: center;
+    }
+    
+    .gallery-page-button {
+        font-size: 130%;
+        display: inline-block;
+        margin-right: 3px;
+        color: white !important;
+    }
+    
+    #gallery-current-page {
+        font-size: 140%;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    #gallery-empty {
+        font-size: 160%;
+        margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        text-align: center;
+    }
+</style>
+
+{% if get.show is defined %}
+    {% set page = get.show %}
+{% else %} 
+    {% set page = 1 %}
+{% endif %}
+
+{% set albumLength = content.albums|length %}
+{% if albumLength < 1 %}
+    {% if lang == 'bg' %}
+        <p id="gallery-empty">Галерията е празна.</p>
+    {% elseif lang == 'en' %}
+        <p id="gallery-empty">Gallery is empty.</p>
+    {% else %}
+        <p id="gallery-empty">Галерията е празна.</p>
+    {% endif %}
+{% endif %}
+
+{% set totalPages = (albumLength/2)|round(0,'ceil') %}
+{% set albumsPerPage = 2 %}
+{% set firstAlbum = (page-1)*2 %}
+{% for offset in range(0, albumsPerPage-1) %}
+    {% if content.albums[firstAlbum+offset] is defined %}
+    {% set album = content.albums[firstAlbum+offset] %}
+        {% if album.images[0].path is defined %}
+        <div class="gallery-album">
+            <div class="gallery-album-title">{{album.title}}</div>
+
+            <a href="{{album.images[0].path}}" class="lightview gallery-cover-link" data-lightview-group="{{album.title}}" controls="relative">
+                <div class="gallery-cover" style="background-image: url('{{album.images[0].path}}')"></div>
+            </a>
+
+            <div class="gallery-image-container">
+                {% for i in 1..3 %}
+                    {% if album.images[i].path is defined %}
+                    <a href="{{album.images[i].path}}" class="lightview" data-lightview-group="{{album.title}}" controls="relative">
+                        <div class="gallery-image" style="background-image: url('{{album.images[i].thumbnail}}')"></div>
+                    </a>
+                    {% endif %}
+                {% endfor %} 
+            </div>
+            
+            <div class="gallery-hidden"> 
+                {% for j in 4..(album.images|length) %}
+                    {% if album.images[j].path is defined %}
+                        <a href="{{album.images[j].path}}" class="lightview gallery-hidden-image" data-lightview-group="{{album.title}}" controls="relative"></a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+
+<div id="gallery-page">
+    {% if page+2 > totalPages %}
+        {% set lastPage = totalPages %}
+    {% else %} 
+        {% set lastPage = page+2 %}
+    {% endif %}
+    
+    {% for i in 1..lastPage %}
+        {% if i > 0 %}
+            {% if i == page %}
+                <a class="gallery-page-button" id="gallery-current-page" href="gallery?show={{i}}#Main">{{i}}<a/>
+            {% else %}
+                <a class="gallery-page-button" href="gallery?show={{i}}#Main">{{i}}<a/>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

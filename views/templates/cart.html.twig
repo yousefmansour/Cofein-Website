@@ -1,0 +1,161 @@
+{% extends layout %}
+{% block articles %}
+{{ dump(content) }}
+    <div class="cart-content">
+        <table class="cart-items">
+            <tr>
+                <td class="cart-column-1">Product</td>
+                <td class="cart-column-2">Quantity</td>
+                <td class="cart-column-3">Price</td>
+            </tr>
+            {% for item in content.items %}   
+                    <tr>
+                    <td class="cart-column-1">
+                        <img class="cart-image" src="{{ item.image }}">
+                        <span class="cart-title">{{ item.name }}</span>
+                    </td>
+                    <td class="cart-column-2">
+                        <span class="cart-quantity">
+                            <button class="incr-quantity-btn">+</button> 
+                            {{ item.quantity }} 
+                            <button class="decr-quantity-btn">-</button>
+                        </span>
+                    </td>
+                        <td class="cart-column-3">
+                            <span class="cart-price">{{ item.price|number_format(2,'.','') }} lv</span>
+                        </td>
+                    </tr>   
+                </div>
+            {% endfor %}
+        </table>
+    </div>
+    <span id="checkout" >
+        <a class="link" href="?go=shopcheckout&lang={{ lang }}#Main">Checkout</a>
+    </span>
+
+<script>
+    $('.incr-quantity-btn').click(qBtnClick);
+    $('.decr-quantity-btn').click(qBtnClick);
+    function qBtnClick(){
+        var id = $(this).closest('.cart-item').attr('id');
+        var option = $(this).attr('class');
+        if(option === 'incr-quantity-btn'){
+            option = 'additem';
+        }
+        if(option  === 'decr-quantity-btn'){
+            option = 'rmvitem';
+        }
+        
+        var href = '?p=shopcart&'+option+'='+id+'&lang={{ lang }}';
+        $.ajax({
+            url: href,
+            dataType: 'html'
+        }).done(function(html){
+            $('.main-content-shop').html(html);
+        });
+    }
+</script>
+    <style>
+        .cart-items {
+            margin-top: 6em;
+            width: auto;
+            height: auto;
+        }
+
+        .cart-item {
+            position: relative;
+            height: 4em;
+            width: 30em;
+            clear: left;
+            background-color: black;
+            border: 1px solid gray;
+            text-align: center;        
+        }
+
+        .cart-image {
+            height: 100%;
+            width: 20%;
+            display: inline-block;
+            float: left;
+        }
+
+        .cart-title {
+            border-right: 1px solid gray;
+            width: 30%;
+            margin-left: 0.5em;
+            line-height: 4em;
+            float: left;
+        }
+
+        .cart-quantity {
+            border-right: 1px solid gray;
+            width: 14%;
+            line-height: 4em;
+            float: left;
+        }
+
+        .cart-price {
+            border-right: 1px solid gray;
+            width: 16%;
+            line-height: 4em;
+            float: left;
+        }
+
+        .cart-options {
+            width: 23%;
+            float: left;
+        }
+
+        .cart-table {
+            background-color: black;
+            width: 30em;
+            height: 3em;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+        .cart-column-1 {
+            width: 300px;
+            height: 80px;
+            border-right: 1px solid gray;
+        }
+
+        .cart-column-2 {
+            width: 100px;
+            height: 80px;
+            border-right: 1px solid gray;
+        }
+
+        .cart-column-3 {
+            width: 100px;
+            height: 80px;
+            border-right: 1px solid gray;
+        }
+
+        
+        .cart-add-button {
+            
+        }
+        
+        .cart-remove-button {
+            
+        }
+        .link {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;          
+        }
+        
+        #checkout {
+            float: right;
+            margin-right: 0.8em;
+            margin-top: 1px;
+            font-size: 110%;
+            background-color: grey;
+            border-radius: 3px;
+        }
+    </style>
+{% endblock %}
+

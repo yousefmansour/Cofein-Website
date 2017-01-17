@@ -1,0 +1,7 @@
+{
+    "require": {
+        "tinify/tinify": "dev-master",
+        "twig/twig": "dev-master",
+        "swiftmailer/swiftmailer": "dev-master"
+    }
+}

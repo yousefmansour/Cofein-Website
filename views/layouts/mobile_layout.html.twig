@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Група Cofein - Официален уебсайт</title>
+        <link href="{{ path }}views/css/reset.css" rel="stylesheet" type="text/css">
+	<link href="{{ path }}views/css/mobile.style.css" rel="stylesheet" type="text/css">
+        <link href='https://fonts.googleapis.com/css?family=Stalinist+One&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/ui-darkness/jquery-ui.css" rel="stylesheet" />
+        
+        <script src="{{ path }}views/js/jquery-compressed.js"></script>
+        <script src="{{ path }}views/js/mobile.script.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="views/js/youtube.js"></script>
+        
+        <meta name="description" content="Група Cofein - Официален уебсайт - Новини, Биография, Снимки">
+	<meta name="viewport" content="initial-scale=1"> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<header id="header">	
+	<img id="sponsor-logo" src="{{ path }}views/img/mobile/sponsor-logo.png" />
+	<img id="nav-icon" src="{{ path }}views/img/mobile/menu-icon.png" />
+
+	<ul id="nav">
+	 <li><a class="nav-button" href="news">НОВИНИ</a></li>
+	 <li><a class="nav-button" href="bio">БИО</a></li>
+	 <li><a class="nav-button" href="gallery">СНИМКИ</a></li>
+	 <li><a class="nav-button" href="nrk">НРК</a></li>
+	 <li><a class="nav-button" href="partners">ПАРТНЬОРИ</a></li>
+	</ul>
+</header>
+
+<div id="content">
+        <div>   
+        {% for message in messages %}
+           <b>{{ message }}</b>
+        {% endfor %}
+        </div>
+    
+        <div>
+        {% block articles %}
+        {% endblock %}
+        </div>
+</div>
+
+<script>
+	document.getElementById('sponsor-logo').addEventListener('click', function(){
+		var url = "http://www.radiopatron.com";
+		var win = window.open(url);
+		win.focus();
+	});
+	
+	document.getElementById('nav-icon').addEventListener('click', function(){
+            
+		var menu = document.getElementById('nav');
+		if(menu.style.display !== 'block'){
+                    menu.style.display = 'block';
+		} else {
+                    menu.style.display = 'none';
+		}
+	});
+        
+        window.addEventListener('orientationchange', function(){     
+            if (window.innerHeight > window.innerWidth){
+                document.getElementsByTagName('body').style.transform = "rotate(90deg)";
+            }
+        });
+        
+        document.addEventListener('click', function() {
+        	document.getElementById('nav').style.display = 'none';	
+        });
+        
+        document.getElementById('nav-icon').addEventListener('click', function(e) {
+        	e.stopPropagation();
+        });
+</script>
+</body>
+</html>
