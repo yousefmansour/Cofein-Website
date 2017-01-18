@@ -10,7 +10,6 @@ class Database {
     }
 
     public function createPDO() {
-        //TO DO code seems sketchy, check again
         try {
             $pdo = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         } catch (Exception $ex) {
@@ -32,7 +31,6 @@ class Database {
     
     public function execute($params = array()){ 
         $this->stmt->execute($params);
-        // TO DO log sql
         return $this;
     }
     
